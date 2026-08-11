@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#5b4bff" />
+  <title>لعبة صائد مدّ الألف | المعلمة إسراء عبد الغني</title>
+  <meta name="description" content="لعبة عربية تفاعلية للأطفال للتدريب على تمييز الكلمات التي تحتوي على مدّ بالألف." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="app">
+    <!-- Intro -->
+    <section id="introScreen" class="screen active">
+      <div class="sky-decoration">
+        <span class="cloud c1"></span>
+        <span class="cloud c2"></span>
+        <span class="star s1">★</span>
+        <span class="star s2">★</span>
+        <span class="star s3">★</span>
+      </div>
+
+      <div class="intro-wrap">
+        <div class="hero-art" aria-hidden="true">
+          <div class="planet-ring"></div>
+          <div class="launcher-card">
+            <div class="launcher">
+              <div class="launcher-barrel"></div>
+              <div class="launcher-base"></div>
+            </div>
+            <div class="floating-word fw1">بَاب</div>
+            <div class="floating-word fw2">قَلَم</div>
+            <div class="floating-word fw3">كِتَاب</div>
+          </div>
+        </div>
+
+        <div class="glass-card intro-card">
+          <span class="badge">لعبة اللغة العربية</span>
+          <h1>صائدُ <span>مدِّ الألف</span></h1>
+          <p class="lead">
+            صَوِّبْ على الكلمة التي تحتوي على <strong>مدٍّ بالألف</strong> واجمع أكبر عدد من النجوم!
+          </p>
+
+          <div class="teacher-pill">
+            <span class="teacher-icon">👩🏻‍🏫</span>
+            <div>
+              <small>المعلمة</small>
+              <strong>إسراء عبد الغني</strong>
+            </div>
+          </div>
+
+          <label class="name-field">
+            <span>اكتب اسم البطل</span>
+            <input id="studentName" type="text" maxlength="24" placeholder="مثال: أحمد" autocomplete="off" />
+          </label>
+
+          <button id="startBtn" class="primary-btn" type="button">
+            <span>ابدأ المغامرة</span>
+            <b>🚀</b>
+          </button>
+
+          <div class="mini-rule">
+            <span>💡</span>
+            <p><strong>تذكّر:</strong> مدّ الألف يكون عندما يأتي قبل الألف حرفٌ مفتوح، مثل: <b>بَاب</b>.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How to play -->
+    <section id="tutorialScreen" class="screen">
+      <div class="tutorial-card glass-card">
+        <div class="mascot">🦊</div>
+        <span class="badge">قبل الانطلاق</span>
+        <h2>كيف ألعب؟</h2>
+        <div class="rule-example">
+          <div class="example good">
+            <span>✅</span>
+            <b>بَاب</b>
+            <small>فيها مدّ بالألف</small>
+          </div>
+          <div class="example bad">
+            <span>❌</span>
+            <b>بَيْت</b>
+            <small>ليس فيها مدّ بالألف</small>
+          </div>
+        </div>
+        <p>الكلمات ستطير في السماء. اضغط على الكلمات التي تحتوي على <strong>مدّ بالألف فقط</strong>.</p>
+        <button id="tutorialStartBtn" class="primary-btn" type="button">جاهز للتصويب 🎯</button>
+      </div>
+    </section>
+
+    <!-- Game -->
+    <section id="gameScreen" class="screen">
+      <header class="hud">
+        <div class="hud-user">
+          <div class="avatar">🧒🏻</div>
+          <div>
+            <small>البطل</small>
+            <strong id="hudName">---</strong>
+          </div>
+        </div>
+
+        <div class="hud-stats">
+          <div class="stat">
+            <span>⭐</span>
+            <b id="score">0</b>
+            <small>نقطة</small>
+          </div>
+          <div class="stat combo">
+            <span>🔥</span>
+            <b id="combo">0</b>
+            <small>متتالية</small>
+          </div>
+          <div class="stat">
+            <span>🏆</span>
+            <b id="level">1</b>
+            <small>المستوى</small>
+          </div>
+        </div>
+
+        <div id="lives" class="lives" aria-label="المحاولات">
+          <span>❤️</span><span>❤️</span><span>❤️</span>
+        </div>
+      </header>
+
+      <main id="gameArena" class="game-arena" aria-label="منطقة اللعب">
+        <div class="sun"></div>
+        <div class="cloud game-cloud gc1"></div>
+        <div class="cloud game-cloud gc2"></div>
+        <div class="cloud game-cloud gc3"></div>
+        <div class="mountains"></div>
+        <div class="ground"></div>
+
+        <div class="mission-card">
+          <span>🎯 المهمة</span>
+          <strong>اصطد الكلمات التي بها مدّ بالألف</strong>
+        </div>
+
+        <div id="progressWrap" class="progress-wrap">
+          <div class="progress-label">
+            <span>تقدّم المستوى</span>
+            <b id="levelProgressText">0 / 8</b>
+          </div>
+          <div class="progress-track">
+            <div id="levelProgressBar" class="progress-bar"></div>
+          </div>
+        </div>
+
+        <div id="wordLayer" class="word-layer"></div>
+        <div id="fxLayer" class="fx-layer" aria-hidden="true"></div>
+
+        <div id="crosshair" class="crosshair" aria-hidden="true">
+          <i></i><i></i><i></i><i></i>
+        </div>
+
+        <div class="launcher-station" aria-hidden="true">
+          <div id="launcherHead" class="launcher-head">
+            <span class="barrel"></span>
+            <span class="scope"></span>
+          </div>
+          <div class="launcher-pedestal"></div>
+          <div class="launcher-glow"></div>
+        </div>
+
+        <div id="feedback" class="feedback" role="status" aria-live="polite"></div>
+      </main>
+
+      <footer class="game-footer">
+        <button id="soundBtn" class="icon-btn" type="button" aria-label="تشغيل أو إيقاف الصوت">🔊</button>
+        <div class="teacher-footer">مع المعلمة <strong>إسراء عبد الغني</strong></div>
+        <button id="pauseBtn" class="icon-btn" type="button" aria-label="إيقاف مؤقت">⏸️</button>
+      </footer>
+    </section>
+
+    <!-- Pause -->
+    <section id="pauseOverlay" class="overlay hidden">
+      <div class="glass-card modal-card">
+        <div class="modal-emoji">⏸️</div>
+        <h2>اللعبة متوقفة</h2>
+        <p>عندما تكون مستعدًا، أكمل المغامرة.</p>
+        <button id="resumeBtn" class="primary-btn">متابعة اللعب</button>
+        <button id="restartFromPauseBtn" class="secondary-btn">إعادة اللعبة</button>
+      </div>
+    </section>
+
+    <!-- Level complete -->
+    <section id="levelOverlay" class="overlay hidden">
+      <div class="glass-card modal-card celebration-card">
+        <div class="confetti-row">🎉 ⭐ 🎊 ⭐ 🎉</div>
+        <h2>أحسنت يا <span id="levelStudentName"></span>!</h2>
+        <p id="levelMessage">أنهيت المستوى بنجاح.</p>
+        <div class="level-score">
+          <span>رصيدك</span>
+          <strong><span id="levelScore">0</span> ⭐</strong>
+        </div>
+        <button id="nextLevelBtn" class="primary-btn">المستوى التالي 🚀</button>
+      </div>
+    </section>
+
+    <!-- End -->
+    <section id="endOverlay" class="overlay hidden">
+      <div class="glass-card modal-card result-card">
+        <div id="resultEmoji" class="result-emoji">🏆</div>
+        <span class="badge">انتهت المغامرة</span>
+        <h2 id="resultTitle">بطل مدّ الألف!</h2>
+        <p id="resultText"></p>
+
+        <div class="result-grid">
+          <div><span>⭐</span><b id="finalScore">0</b><small>النقاط</small></div>
+          <div><span>🔥</span><b id="bestCombo">0</b><small>أفضل متتالية</small></div>
+          <div><span>🎯</span><b id="accuracy">0%</b><small>الدقة</small></div>
+        </div>
+
+        <div class="result-note">المعلمة: <strong>إسراء عبد الغني</strong></div>
+        <button id="playAgainBtn" class="primary-btn">ألعب مرة أخرى 🔁</button>
+      </div>
+    </section>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
